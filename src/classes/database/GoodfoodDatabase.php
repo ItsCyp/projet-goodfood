@@ -85,4 +85,55 @@ class GoodfoodDatabase
         $stmt->execute(['numTable' => $numTable, 'dateDebut' => $dateDebut, 'dateFin' => $dateFin]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getChiffreAffaireParServeur(string $dateDebut, string $dateFin): array
+    {
+        $sql = "SELECT s.nomserv, SUM(com.montcom) AS chiffreAffaire, COUNT(com.numcom) AS nbCommandes
+            FROM SERVEUR s
+            JOIN AFFECTER a ON s.numserv = a.numserv
+            JOIN COMMANDE com ON a.numtab = com.numtab AND a.dataff = com.datcom
+            WHERE com.datcom BETWEEN STR_TO_DATE(:dateDebut, '%Y-%m-%d') AND STR_TO_DATE(:dateFin, '%Y-%m-%d')
+            GROUP BY s.nomserv
+            ORDER BY chiffreAffaire DESC";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['dateDebut' => $dateDebut, 'dateFin' => $dateFin]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getServeursSansChiffreAffaire(string $dateDebut, string $dateFin): array
+    {
+        $sql = "SELECT s.nomserv
+            FROM SERVEUR s
+            WHERE s.numserv NOT IN (
+                SELECT DISTINCT a.numserv
+                FROM AFFECTER a
+                JOIN COMMANDE com ON a.numtab = com.numtab AND a.dataff = com.datcom
+                WHERE com.datcom BETWEEN STR_TO_DATE(:dateDebut, '%Y-%m-%d') AND STR_TO_DATE(:dateFin, '%Y-%m-%d')
+            )";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['dateDebut' => $dateDebut, 'dateFin' => $dateFin]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateOrderTotal(int $numCom): void
+    {
+        $sql = 'SELECT SUM(p.prixunit * c.quantite) AS total
+            FROM PLAT p
+            JOIN CONTIENT c ON p.numPlat = c.numPlat
+            WHERE c.numCom = :numCom';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['numCom' => $numCom]);
+        $total = $stmt->fetchColumn();
+
+        $updateSql = 'UPDATE COMMANDE SET montcom = :total WHERE numcom = :numCom';
+        $updateStmt = $this->pdo->prepare($updateSql);
+        $updateStmt->execute(['total' => $total, 'numCom' => $numCom]);
+    }
+
+    public function getOrderNumbers(): array
+    {
+        $sql = 'SELECT * FROM COMMANDE';
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

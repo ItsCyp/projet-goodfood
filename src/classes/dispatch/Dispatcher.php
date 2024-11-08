@@ -51,6 +51,10 @@ class Dispatcher
                 $action = new act\UpdateOrderTotalAction();
                 $html = $action->execute();
                 break;
+            case 'setPeriod':
+                $action = new act\PeriodeAction();
+                $html = $action->execute();
+                break;
         }
         $this->renderPage($html);
     }
@@ -79,6 +83,7 @@ class Dispatcher
     <li><a href="?action=serverRevenue">Chiffre d'affaire des serveurs</a></li>
     <li><a href="?action=noRevenueServers">Serveurs sans chiffre d'affaire</a></li>
     <li><a href="?action=updateOrderTotal">Mettre à jour le total de la commande</a></li>
+    <li><a href="?action=setPeriod">Définir la période</a></li>
 </ul>
     <div class="container">
         $html
