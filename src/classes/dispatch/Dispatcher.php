@@ -11,6 +11,9 @@ class Dispatcher
     /**
      * Constructeur de la classe Dispatcher.
      * Initialise l'action à partir des paramètres GET.
+     * Si un paramètre 'action' est présent dans l'URL, il est récupéré et sécurisé
+     * grâce à `filter_input` pour éviter les injections.
+     * Si aucun paramètre n'est fourni, l'action par défaut est fixée à 'default'.
      */
     function __construct()
     {
@@ -18,51 +21,68 @@ class Dispatcher
     }
 
     /**
-     * Exécute l'action en fonction de la valeur de $action.
+     * Méthode principale qui exécute l'action en fonction de la valeur de $action.
+     * Pour chaque valeur spécifique de $action, une nouvelle instance de l'action appropriée
+     * est créée, puis la méthode `execute` de cette action est appelée pour générer le contenu HTML.
+     * Le contenu HTML est ensuite stocké dans la variable $html pour être rendu plus tard.
      */
     public function run(): void
     {
+        // Variable qui va stocker le contenu HTML généré par l'action exécutée.
+        $html = '';
+
+        // Switch qui détermine quelle action exécuter en fonction de la valeur de $this->action.
         switch ($this->action) {
             case 'default':
+                // Action par défaut - accueil de l'application.
                 $action = new act\DefaultAction();
                 $html = $action->execute();
                 break;
             case 'listDishes':
+                // Liste les plats disponibles.
                 $action = new act\ListDishesAction();
                 $html = $action->execute();
                 break;
             case 'unorderedDishes':
+                // Liste les plats qui n'ont jamais été commandés.
                 $action = new act\UnorderedDishesAction();
                 $html = $action->execute();
                 break;
             case 'listServersByTable':
+                // Liste les serveurs affectés à une table spécifique pendant une période.
                 $action = new act\ListServersByTableAction();
                 $html = $action->execute();
                 break;
             case 'serverRevenue':
+                // Affiche le chiffre d'affaires et le nombre de commandes pour chaque serveur.
                 $action = new act\ServerRevenueAction();
                 $html = $action->execute();
                 break;
             case 'noRevenueServers':
+                // Liste les serveurs n'ayant réalisé aucun chiffre d'affaires pendant une période donnée.
                 $action = new act\NoRevenueServersAction();
                 $html = $action->execute();
                 break;
             case 'updateOrderTotal':
+                // Calcule le total d'une commande donnée et met à jour la base de données.
                 $action = new act\UpdateOrderTotalAction();
                 $html = $action->execute();
                 break;
             case 'setPeriod':
+                // Permet à l'utilisateur de définir une période de temps.
                 $action = new act\PeriodeAction();
                 $html = $action->execute();
                 break;
         }
+        // Appel de la méthode renderPage pour afficher la page HTML avec le contenu généré.
         $this->renderPage($html);
     }
 
     /**
      * Affiche la page HTML avec le contenu généré par l'action.
+     * La page inclut une barre de navigation pour accéder aux différentes actions.
      *
-     * @param string $html Le contenu HTML à afficher.
+     * @param string $html Le contenu HTML à afficher dans le corps de la page.
      */
     private function renderPage(string $html): void
     {
