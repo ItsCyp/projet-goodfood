@@ -2,7 +2,7 @@
 
 namespace iutnc\goodfood\action;
 
-use iutnc\goodfood\database\GoodfoodDatabase;
+use iutnc\goodfood\repository\GoodfoodRepository;
 
 /**
  * Classe NoRevenueServersAction
@@ -33,7 +33,7 @@ class NoRevenueServersAction extends Action
         $html .= '<ul>';
 
         // Récupère une instance de la base de données et appelle la méthode pour obtenir les serveurs sans chiffre d'affaires.
-        $db = GoodfoodDatabase::getInstance();
+        $db = GoodfoodRepository::getInstance();
         $serveurs = $db->getServeursSansChiffreAffaire($dateDebut, $dateFin);
 
         // Parcourt chaque serveur pour ajouter un élément de liste HTML avec son nom.

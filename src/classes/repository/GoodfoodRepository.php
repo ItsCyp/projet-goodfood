@@ -1,22 +1,22 @@
 <?php
 
-namespace iutnc\goodfood\database;
+namespace iutnc\goodfood\repository;
 
 use PDO;
 
-class GoodfoodDatabase
+class GoodfoodRepository
 {
     // Instance PDO pour la connexion à la base de données
     private PDO $pdo;
 
-    // Instance unique de GoodfoodDatabase pour l'implémentation du pattern Singleton
-    private static ?GoodfoodDatabase $instance = null;
+    // Instance unique de GoodfoodRepository pour l'implémentation du pattern Singleton
+    private static ?GoodfoodRepository $instance = null;
 
     // Configuration de connexion à la base de données, chargée depuis un fichier de configuration
     private static array $config = [];
 
     /**
-     * Constructeur privé pour empêcher l'instanciation directe de GoodfoodDatabase.
+     * Constructeur privé pour empêcher l'instanciation directe de GoodfoodRepository.
      * Initialise la connexion à la base de données PDO en utilisant les informations de configuration.
      *
      * @param array $conf Tableau associatif contenant 'host', 'dbname', 'user' et 'password'.
@@ -54,15 +54,15 @@ class GoodfoodDatabase
     }
 
     /**
-     * Renvoie l'instance unique de GoodfoodDatabase (pattern Singleton).
+     * Renvoie l'instance unique de GoodfoodRepository (pattern Singleton).
      * Si aucune instance n'existe, elle est créée en utilisant les informations de configuration.
      *
-     * @return GoodfoodDatabase|null L'instance unique de la base de données.
+     * @return GoodfoodRepository|null L'instance unique de la base de données.
      */
-    public static function getInstance(): ?GoodfoodDatabase
+    public static function getInstance(): ?GoodfoodRepository
     {
         if (is_null(self::$instance)) {
-            self::$instance = new GoodfoodDatabase(self::$config);
+            self::$instance = new GoodfoodRepository(self::$config);
         }
         return self::$instance;
     }

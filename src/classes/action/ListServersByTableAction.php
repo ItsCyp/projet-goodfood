@@ -2,7 +2,7 @@
 
 namespace iutnc\goodfood\action;
 
-use iutnc\goodfood\database\GoodfoodDatabase;
+use iutnc\goodfood\repository\GoodfoodRepository;
 
 /**
  * Classe ListServersByTableAction
@@ -50,7 +50,7 @@ class ListServersByTableAction extends Action
             $html .= '<ul>';
 
             // Récupère une instance de la base de données et les serveurs affectés à cette table.
-            $db = GoodfoodDatabase::getInstance();
+            $db = GoodfoodRepository::getInstance();
             $serveurs = $db->getServeursParTable($numTable, $dateDebut, $dateFin);
 
             // Parcourt chaque serveur pour ajouter un élément de liste HTML avec son numéro et son nom.

@@ -2,7 +2,7 @@
 
 namespace iutnc\goodfood\action;
 
-use iutnc\goodfood\database\GoodfoodDatabase;
+use iutnc\goodfood\repository\GoodfoodRepository;
 
 /**
  * Classe UpdateOrderTotalAction
@@ -22,7 +22,7 @@ class UpdateOrderTotalAction extends Action
         // Si la requête est de type GET, on affiche la liste des commandes et un formulaire de mise à jour.
         if ($this->http_method == 'GET') {
             // Récupère l'instance de la base de données via le singleton.
-            $db = GoodfoodDatabase::getInstance();
+            $db = GoodfoodRepository::getInstance();
 
             // Récupère les numéros des commandes existantes dans la base de données.
             $orders = $db->getOrderNumbers();
@@ -54,7 +54,7 @@ class UpdateOrderTotalAction extends Action
             // Vérifie que le numéro de commande est valide (supérieur à 0).
             if ($numCom > 0) {
                 // Récupère l'instance de la base de données.
-                $db = GoodfoodDatabase::getInstance();
+                $db = GoodfoodRepository::getInstance();
 
                 // Appelle la méthode pour mettre à jour le total de la commande.
                 $db->updateOrderTotal($numCom);

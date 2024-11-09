@@ -2,7 +2,7 @@
 
 namespace iutnc\goodfood\action;
 
-use iutnc\goodfood\database\GoodfoodDatabase;
+use iutnc\goodfood\repository\GoodfoodRepository;
 
 /**
  * Classe ListDishesAction
@@ -33,7 +33,7 @@ class ListDishesAction extends Action
         $html .= '<ul>';
 
         // Récupère une instance de la base de données via le pattern Singleton
-        $db = GoodfoodDatabase::getInstance();
+        $db = GoodfoodRepository::getInstance();
 
         // Récupère la liste des plats servis dans la période spécifiée
         $plats = $db->getPlatsServis($dateDebut, $dateFin);

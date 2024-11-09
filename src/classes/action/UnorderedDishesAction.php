@@ -2,7 +2,7 @@
 
 namespace iutnc\goodfood\action;
 
-use iutnc\goodfood\database\GoodfoodDatabase;
+use iutnc\goodfood\repository\GoodfoodRepository;
 
 /**
  * Classe UnorderedDishesAction
@@ -33,7 +33,7 @@ class UnorderedDishesAction extends Action
         $html .= '<ul>'; // Début de la liste des plats non commandés.
 
         // Récupère l'instance de la base de données via le singleton.
-        $db = GoodfoodDatabase::getInstance();
+        $db = GoodfoodRepository::getInstance();
 
         // Récupère les plats non commandés durant la période spécifiée.
         $plats = $db->getPlatsNonCommandes($dateDebut, $dateFin);

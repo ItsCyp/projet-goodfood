@@ -2,7 +2,7 @@
 
 namespace iutnc\goodfood\action;
 
-use iutnc\goodfood\database\GoodfoodDatabase;
+use iutnc\goodfood\repository\GoodfoodRepository;
 
 /**
  * Classe ServerRevenueAction
@@ -33,7 +33,7 @@ class ServerRevenueAction extends Action
         $html .= '<ul>'; // Début de la liste des serveurs.
 
         // Récupère l'instance de la base de données via le singleton.
-        $db = GoodfoodDatabase::getInstance();
+        $db = GoodfoodRepository::getInstance();
 
         // Récupère le chiffre d'affaires et le nombre de commandes par serveur dans la période spécifiée.
         $serveurs = $db->getChiffreAffaireParServeur($dateDebut, $dateFin);
