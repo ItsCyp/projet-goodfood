@@ -36,7 +36,7 @@ La clé minimale pour notre modèle est :
 
 - G2 : `COMMANDE (numCom, numTable, dateCom, nbPers, datePaie, modePaie, montantCom)` PRIMARY KEY `numCom`
 
-    - Remarque : L'attribut `dateAffect` peut être supprimé parce que... (ajouter une explication ici)
+    - Remarque : L'attribut `dateAffect` peut être supprimé parce que on peut le déduire de la table `AFFECTER`.
 
 - G3 : `PLAT (numPlat, libelle, type, prixUnit)` PRIMARY KEY `numPlat`
 
